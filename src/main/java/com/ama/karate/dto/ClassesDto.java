@@ -1,7 +1,7 @@
 package com.ama.karate.dto;
 
 public class ClassesDto {
-    
+
     private int classLid;
     private String className;
     private int classCount;

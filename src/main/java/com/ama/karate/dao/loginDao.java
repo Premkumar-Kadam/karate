@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.ama.karate.dto.AuthDto;
+import com.ama.karate.dto.SessionDto;
 
 @Service
 public class loginDao {
@@ -20,6 +21,14 @@ public class loginDao {
         } catch (DataAccessException e) {
             return new AuthDto();
         }
+    }
 
+    public SessionDto sessionData(String phoneNo){
+        try {
+            String SQL = "";
+            return jt.queryForObject(SQL, SessionDto.class, phoneNo);
+        } catch (DataAccessException e) {
+            return new SessionDto();
+        }
     }
 }

@@ -11,9 +11,15 @@ public class RedisService {
 
     private RedisTemplate<String, Object> redisTemplate;
 
-    public void setSession(String sessionKey, SessionDto sessionObj){
-        ValueOperations<String, Object> valueOps = redisTemplate.opsForValue();
-        valueOps.set(sessionKey, sessionObj);
+    public boolean setSession(String sessionKey, SessionDto sessionObj){
+        try {
+            ValueOperations<String, Object> valueOps = redisTemplate.opsForValue();
+            valueOps.set(sessionKey, sessionObj);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+
     }
 
     public SessionDto getSession(String sessionKey) {
