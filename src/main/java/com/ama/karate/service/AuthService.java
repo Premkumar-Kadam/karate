@@ -14,9 +14,10 @@ public class AuthService {
 
     @Autowired PasswordService passwordService;
 
+    //to check if user entered password matched the database password
     public boolean isAuthenticated(AuthDto reqAuthDto){
         AuthDto dbAuth = login.userPassword(reqAuthDto.getPhoneNo());
-        if(dbAuth.getPassword() != null){
+        if(dbAuth != null){
             boolean authSuccess = passwordService.comparePassword(reqAuthDto.getPassword(), dbAuth.getPassword());
             return authSuccess;
         }else{
