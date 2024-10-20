@@ -29,10 +29,11 @@ public class Login {
         Map<String, Object> response = new HashMap<>();
         if (isAuthenticated){
 
-            session.setAttribute("phoneNo", loginRequest.getPhoneNo());
-            session.setAttribute("authenticated", true);
             String sessionKey = Helper.generateRandomString(8);
             boolean sessionRes = authService.setSessionInRedis(sessionKey, loginRequest.getPhoneNo());
+            session.setAttribute("phoneNo", loginRequest.getPhoneNo());
+            session.setAttribute("authenticated", true);
+            session.setAttribute("sessionKey", sessionKey);
 
             if(sessionRes){
                 response.put("status", "success");

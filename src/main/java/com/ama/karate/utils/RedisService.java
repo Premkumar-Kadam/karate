@@ -17,6 +17,7 @@ public class RedisService {
             valueOps.set(sessionKey, sessionObj);
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
 
