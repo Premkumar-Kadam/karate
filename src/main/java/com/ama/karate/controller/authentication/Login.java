@@ -34,6 +34,8 @@ public class Login {
             session.setAttribute("phoneNo", loginRequest.getPhoneNo());
             session.setAttribute("authenticated", true);
             session.setAttribute("sessionKey", sessionKey);
+            String redisValue = authService.getSessionInRedis(sessionKey);
+            System.out.println("Redis value: " + redisValue);
 
             if(sessionRes){
                 response.put("status", "success");

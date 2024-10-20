@@ -35,7 +35,13 @@ public class AuthService implements AuthInterfaceService{
     @Override
     public boolean setSessionInRedis(String sessionKey, String phoneNo){
         SessionDto sessionData = login.sessionData(phoneNo);
-        boolean sessionRes = rs.setSession(sessionKey, sessionData);
+        boolean sessionRes = rs.setSession(sessionKey, sessionData.toString());
+        return sessionRes;
+    }
+
+    @Override
+    public String getSessionInRedis(String sessionKey){
+        String sessionRes = rs.getSession(sessionKey);
         return sessionRes;
     }
 }

@@ -11,4 +11,6 @@ public interface  AuthInterfaceService{
 
     boolean setSessionInRedis(String sessionKey, String phoneNo);
 
+    String getSessionInRedis(String sessionKey);
+
 }

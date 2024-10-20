@@ -1,34 +1,41 @@
 package com.ama.karate.utils;
 
-import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
-
+import org.springframework.stereotype.Service;
 import com.ama.karate.dto.SessionDto;
 
-@Configuration
+@Service
 public class RedisService {
 
-    private RedisTemplate<String, Object> redisTemplate;
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
 
-    public boolean setSession(String sessionKey, SessionDto sessionObj){
+    public boolean setSession(String sessionKey, String value) {
         try {
-            ValueOperations<String, Object> valueOps = redisTemplate.opsForValue();
-            valueOps.set(sessionKey, sessionObj);
+            redisTemplate.opsForValue().set(sessionKey, value);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-
     }
 
-    public SessionDto getSession(String sessionKey) {
-        ValueOperations<String, Object> valueOps = redisTemplate.opsForValue();
-        return (SessionDto) valueOps.get(sessionKey);
+    public String getSession(String sessionKey) {
+        try {
+            return redisTemplate.opsForValue().get(sessionKey);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
-    
-    public void deleteSession(String sessionKey) {
-        redisTemplate.delete(sessionKey);
+
+    public boolean deleteSession(String sessionKey) {
+        try {
+            return redisTemplate.delete(sessionKey) != null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
