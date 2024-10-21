@@ -56,7 +56,6 @@ public class Login {
                 return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
-
         }else{
             response.put("status", "error");
             response.put("message", "authorization failed");

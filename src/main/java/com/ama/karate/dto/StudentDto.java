@@ -1,8 +1,10 @@
 package com.ama.karate.dto;
 
-public class StundetDto {
+public class StudentDto {
     
+    private String profilePic;
     private String name;
     private String className;
     private String belt;
+    
 }
