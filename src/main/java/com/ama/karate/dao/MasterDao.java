@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.ama.karate.dto.BeltDto;
 import com.ama.karate.dto.ClassesDto;
-import com.ama.karate.dto.StundetDto;
 import com.ama.karate.interfaceService.MasterInterfaceService;
 
 @Service

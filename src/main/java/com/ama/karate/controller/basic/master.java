@@ -8,13 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ama.karate.dao.StundetDto;
 import com.ama.karate.dto.BeltDto;
 import com.ama.karate.dto.ClassesDto;
-import com.ama.karate.dto.StundetDto;
 import com.ama.karate.interfaceService.MasterInterfaceService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import jakarta.servlet.http.HttpSession;
 
 @RestController
@@ -53,7 +52,7 @@ public class Master {
     }
 
     @PostMapping("/all-students")
-    public ResponseEntity<String> beltList(HttpSession session) {
+    public ResponseEntity<String> allStudent(HttpSession session) {
 
         try {
             String phoneNo = (String) session.getAttribute("phoneNo");
