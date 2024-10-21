@@ -36,4 +36,18 @@ public class master {
         }
     }
 
+    @PostMapping("/belt-list")
+    public ResponseEntity<String> beltList(HttpSession session) {
+
+        try {
+            String phoneNo = (String) session.getAttribute("phoneNo");
+            List<ClassesDto> response = mis.classList(phoneNo);
+
+            String jsonResponse = om.writeValueAsString(response);
+            return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
+        } catch (JsonProcessingException e) {
+            return new ResponseEntity<>("JsonProcessingException", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

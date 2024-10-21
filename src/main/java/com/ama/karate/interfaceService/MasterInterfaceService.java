@@ -6,5 +6,5 @@ import com.ama.karate.dto.ClassesDto;
 
 public interface  MasterInterfaceService {
 
-    List<ClassesDto> classList(String phoneNo);
+    List<ClassesDto> bringClassList(String phoneNo);
 }
