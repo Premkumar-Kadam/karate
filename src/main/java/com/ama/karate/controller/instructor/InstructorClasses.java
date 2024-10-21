@@ -1,4 +1,4 @@
-package com.ama.karate.controller.basic;
+package com.ama.karate.controller.instructor;
 
 import java.util.List;
 
@@ -6,30 +6,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ama.karate.dto.BeltDto;
 import com.ama.karate.dto.ClassesDto;
-import com.ama.karate.dto.StundetDto;
-import com.ama.karate.interfaceService.MasterInterfaceService;
+import com.ama.karate.dto.StudentDto;
+import com.ama.karate.interfaceService.InstructorInterfaceService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpSession;
 
 @RestController
-public class Master {
+public class InstructorClasses {
 
-    @Autowired MasterInterfaceService mis;
+    @Autowired InstructorInterfaceService iis;
 
     @Autowired ObjectMapper om;
-
-    @PostMapping("/classes-list")
-    public ResponseEntity<String> classesList(HttpSession session) {
+    
+    @PostMapping("/instructor-classes")
+    public ResponseEntity<String> instructorClasses(HttpSession session) {
 
         try {
             String phoneNo = (String) session.getAttribute("phoneNo");
-            List<ClassesDto> response = mis.bringClassList();
+            List<ClassesDto> response = iis.bringInstructorClasses(phoneNo);
 
             String jsonResponse = om.writeValueAsString(response);
             return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
@@ -38,12 +38,12 @@ public class Master {
         }
     }
 
-    @PostMapping("/belt-list")
-    public ResponseEntity<String> beltList(HttpSession session) {
+    @PostMapping("/class-studnets")
+    public ResponseEntity<String> classStudnets(@RequestBody int classId, HttpSession session) {
 
         try {
             String phoneNo = (String) session.getAttribute("phoneNo");
-            List<BeltDto> response = mis.bringBeltList();
+            List<StudentDto> response = iis.bringClassStudents(phoneNo, classId);
 
             String jsonResponse = om.writeValueAsString(response);
             return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
@@ -52,12 +52,12 @@ public class Master {
         }
     }
 
-    @PostMapping("/all-students")
-    public ResponseEntity<String> beltList(HttpSession session) {
+    @PostMapping("/studnet-details")
+    public ResponseEntity<String> studentDetails(@RequestBody int studentId, HttpSession session) {
 
         try {
             String phoneNo = (String) session.getAttribute("phoneNo");
-            List<StundetDto> response = mis.bringAllStudents();
+            List<StudentDto> response = iis.bringStudentDetails(phoneNo, studentId);
 
             String jsonResponse = om.writeValueAsString(response);
             return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
@@ -65,5 +65,4 @@ public class Master {
             return new ResponseEntity<>("JsonProcessingException", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }

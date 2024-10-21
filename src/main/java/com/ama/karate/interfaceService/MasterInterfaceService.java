@@ -2,9 +2,17 @@ package com.ama.karate.interfaceService;
 
 import java.util.List;
 
+import com.ama.karate.dto.BeltDto;
 import com.ama.karate.dto.ClassesDto;
+import com.ama.karate.dto.StundetDto;
 
 public interface  MasterInterfaceService {
 
-    List<ClassesDto> classList(String phoneNo);
+    List<ClassesDto> bringClassList();
+
+    List<BeltDto> bringBeltList();
+
+    List<StundetDto> bringAllStudents();
+
+
 }
