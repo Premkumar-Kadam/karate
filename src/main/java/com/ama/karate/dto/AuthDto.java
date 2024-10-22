@@ -1,6 +1,12 @@
 package com.ama.karate.dto;
 
 public class AuthDto {
+
+    public AuthDto() {}
+
+    public AuthDto(String phoneNo1, String password1) {
+    }
+    
     private String phoneNo;
     private String password;
 

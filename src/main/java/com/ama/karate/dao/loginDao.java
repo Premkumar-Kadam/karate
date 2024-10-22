@@ -16,6 +16,7 @@ public class loginDao {
 
     //To fetch the password by phone number
     public AuthDto userPassword(String phoneNo) {
+        System.out.println("user phone in dao : 0"+phoneNo);
         try {
             String SQL = "SELECT password, phone_no AS phoneNo FROM public.user WHERE phone_no = ? AND active = TRUE";
     

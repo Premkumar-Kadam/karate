@@ -23,6 +23,7 @@ public class AuthService implements AuthInterfaceService{
     @Override
     public boolean isAuthenticated(AuthDto reqAuthDto){
         AuthDto dbAuth = login.userPassword(reqAuthDto.getPhoneNo());
+
         if(dbAuth != null){
             boolean authSuccess = passwordService.comparePassword(reqAuthDto.getPassword(), dbAuth.getPassword());
             return authSuccess;
