@@ -3,6 +3,7 @@ package com.ama.karate.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.ama.karate.dao.instructor.InstructorClassesDao;
 import com.ama.karate.dao.instructor.InstructorStudentDao;
@@ -12,6 +13,7 @@ import com.ama.karate.interfaceService.InstructorInterfaceService;
 
 import jakarta.servlet.http.HttpSession;
 
+@Service
 public class InstructorService implements InstructorInterfaceService{
 
     @Autowired InstructorClassesDao icd;

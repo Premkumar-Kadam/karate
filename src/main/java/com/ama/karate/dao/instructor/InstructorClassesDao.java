@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.ama.karate.dto.ClassesDto;
 import com.ama.karate.dto.StudentDto;
-import com.ama.karate.interfaceService.InstructorInterfaceService;
 
 @Service
 public class InstructorClassesDao{
