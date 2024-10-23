@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.ama.karate.dao.InstructorClassesDao;
-import com.ama.karate.dao.InstructorStudentDao;
+import com.ama.karate.dao.instructor.InstructorClassesDao;
+import com.ama.karate.dao.instructor.InstructorStudentDao;
 import com.ama.karate.dto.ClassesDto;
 import com.ama.karate.dto.StudentDto;
 import com.ama.karate.interfaceService.InstructorInterfaceService;
+
+import jakarta.servlet.http.HttpSession;
 
 public class InstructorService implements InstructorInterfaceService{
 
@@ -29,6 +31,12 @@ public class InstructorService implements InstructorInterfaceService{
     @Override
     public List<StudentDto> bringStudentDetails(String phoneNo, int studentId) {
         return isd.bringStudentDetails(phoneNo, studentId);
+    }
+
+    @Override
+    public List<StudentDto> sendStudentAdmissions(String StudentObj, HttpSession session) {
+        String phoneNo = (String) session.getAttribute("phoneNo");
+        return isd.sendStudentAdmissions(StudentObj, phoneNo);
     }
 
     

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ama.karate.dto.StudentDto;
@@ -24,11 +25,24 @@ public class InstructorStudent {
     @Autowired ObjectMapper om;
     
     @PostMapping("/studnet-details")
-    public ResponseEntity<String> studentDetails(@RequestBody int studentId, HttpSession session) {
+    public ResponseEntity<String> studentDetails(@RequestParam int studentId, HttpSession session) {
 
         try {
             String phoneNo = (String) session.getAttribute("phoneNo");
             List<StudentDto> response = iis.bringStudentDetails(phoneNo, studentId);
+
+            String jsonResponse = om.writeValueAsString(response);
+            return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
+        } catch (JsonProcessingException e) {
+            return new ResponseEntity<>("JsonProcessingException", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/student-admissions")
+    public ResponseEntity<String> studentAdmissions(@RequestBody String StundetJson) {
+
+        try {
+            List<StudentDto> response = iis.sendStudentAdmissions(StundetJson);
 
             String jsonResponse = om.writeValueAsString(response);
             return new ResponseEntity<>(jsonResponse, HttpStatus.OK);

@@ -9,7 +9,7 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.when;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.ama.karate.dao.loginDao;
+import com.ama.karate.dao.authentication.loginDao;
 import com.ama.karate.dto.AuthDto;
 import com.ama.karate.service.AuthService;
 import com.ama.karate.utils.PasswordService;

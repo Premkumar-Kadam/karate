@@ -1,4 +1,4 @@
-package com.ama.karate.dao;
+package com.ama.karate.dao.authentication;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;

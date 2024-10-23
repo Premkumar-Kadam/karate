@@ -1,4 +1,4 @@
-package com.ama.karate.dao;
+package com.ama.karate.dao.basic;
 
 import java.util.ArrayList;
 import java.util.List;
