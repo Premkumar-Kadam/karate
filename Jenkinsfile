@@ -4,8 +4,6 @@ pipeline {
     environment {
         DOCKER_IMAGE = "myapp-karate"
         CONTAINER_NAME = "myapp-container"
-        REPO_URL = 'https://github.com/Premkumar-Kadam/karate'
-        BRANCH_NAME = 'main'
         IMAGE_TAG = "${env.BUILD_NUMBER}" // Tag the Docker image with the build number
     }
 
@@ -15,12 +13,6 @@ pipeline {
     }
 
     stages {
-        stage('Checkout Code') {
-            steps {
-                // Checkout the code from the specified branch
-                git branch: "${BRANCH_NAME}", url: "${REPO_URL}"
-            }
-        }
 
         stage('Build with Maven') {
             steps {
