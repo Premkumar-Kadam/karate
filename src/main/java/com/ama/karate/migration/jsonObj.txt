@@ -1,0 +1,77 @@
+-------------------After Login Successfull - login Query
+{
+  "userLid" : 1,
+  "phoneNo" : "9894949280",
+  "userRole" : "ROLE_ADMIN",
+  "title" : "jr",
+  "profileUrl" : "",
+  "userBelt" : "",
+  "email" : "",
+  "fullName" : "",
+  "address" : "",
+  "userAccess" : [],
+  "totalClass" : ,
+  "totalStudent" : ,
+  "totalInstructor" : "",
+  "sessionKey" : "",
+}
+
+-------------------classes details based on user_lid
+[
+    {
+        "classes_name" : "",
+        "institution_name" : ["",""],
+        "classes_address" : "",
+        "classes_timing" : ["Monday 12PM to 2PM"],
+        "total_studnets" : count,
+        "classes_lid" : 
+    }
+]
+
+-------------------Student list based on classLid
+[
+    {
+        "student_name" : "",
+        "student_belt" : "",
+        "student_profile_url" : "",
+        "student_lid" : ""
+    }
+]
+
+-------------------instructor list based on classLid
+[
+    {
+        "instructor_name" : "",
+        "instructor_belt" : "",
+        "instructor_profile_url" : "",
+        "instructor_lid" : "",
+    }
+]
+
+-------------------Student details based on student_lid
+[
+    {
+        *
+    }
+]
+
+-------------------instructor details based on instructor_lid
+
+[
+    {
+        *
+    }
+]
+
+-------------------Belt details all
+
+[
+    {
+        "belt_name" : ,
+        "portion" : "",
+        "belt_lid" : "",
+        "colour_code":"",
+        "level" : "",
+    }
+]
+

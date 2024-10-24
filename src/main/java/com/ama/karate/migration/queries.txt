@@ -1,0 +1,11 @@
+----login Query
+
+SELECT DISTINCT pu.id AS userLid, pu.phone_no AS phoneNo, rr.name AS userRole, ut.title, pu.profile_url AS profileUrl, bm.colour AS userBelt, pu.email, pu.full_name AS fullName, 
+	   pu.address
+FROM public.user pu
+INNER JOIN roles rr ON rr.id = pu.role_id
+INNER JOIN user_class uc ON uc.user_lid = pu.id
+INNER JOIN class_master cm ON cm.id = uc.class_lid
+INNER JOIN belt_master bm ON bm.id = uc.belt_lid
+LEFT JOIN user_title ut ON ut.user_lid = pu.id 
+WHERE pu.id = 1;
