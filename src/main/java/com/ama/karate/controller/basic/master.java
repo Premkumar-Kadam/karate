@@ -8,12 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ama.karate.dao.StundetDto;
 import com.ama.karate.dto.BeltDto;
 import com.ama.karate.dto.ClassesDto;
+import com.ama.karate.dto.StudentDto;
 import com.ama.karate.interfaceService.MasterInterfaceService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import jakarta.servlet.http.HttpSession;
 
 @RestController
@@ -24,12 +25,10 @@ public class Master {
     @Autowired ObjectMapper om;
 
     @PostMapping("/classes-list")
-    public ResponseEntity<String> classesList(HttpSession session) {
+    public ResponseEntity<String> classesList() {
 
         try {
-            String phoneNo = (String) session.getAttribute("phoneNo");
             List<ClassesDto> response = mis.bringClassList();
-
             String jsonResponse = om.writeValueAsString(response);
             return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
         } catch (JsonProcessingException e) {
@@ -41,7 +40,6 @@ public class Master {
     public ResponseEntity<String> beltList(HttpSession session) {
 
         try {
-            String phoneNo = (String) session.getAttribute("phoneNo");
             List<BeltDto> response = mis.bringBeltList();
 
             String jsonResponse = om.writeValueAsString(response);
@@ -56,7 +54,7 @@ public class Master {
 
         try {
             String phoneNo = (String) session.getAttribute("phoneNo");
-            List<StundetDto> response = mis.bringAllStudents();
+            List<StudentDto> response = mis.bringAllStudents();
 
             String jsonResponse = om.writeValueAsString(response);
             return new ResponseEntity<>(jsonResponse, HttpStatus.OK);

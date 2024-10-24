@@ -3,7 +3,7 @@ package com.ama.karate.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ama.karate.dao.loginDao;
+import com.ama.karate.dao.authentication.loginDao;
 import com.ama.karate.dto.AuthDto;
 import com.ama.karate.dto.SessionDto;
 import com.ama.karate.interfaceService.AuthInterfaceService;
@@ -23,6 +23,7 @@ public class AuthService implements AuthInterfaceService{
     @Override
     public boolean isAuthenticated(AuthDto reqAuthDto){
         AuthDto dbAuth = login.userPassword(reqAuthDto.getPhoneNo());
+
         if(dbAuth != null){
             boolean authSuccess = passwordService.comparePassword(reqAuthDto.getPassword(), dbAuth.getPassword());
             return authSuccess;

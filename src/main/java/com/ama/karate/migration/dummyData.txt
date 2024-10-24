@@ -1,0 +1,46 @@
+-- Insert into roles
+INSERT INTO roles (name, abbr, active, created_by) VALUES 
+('ROLE_ADMIN', 'am', true, 'system'),
+('ROLE_INSTRUCTOR', 'ins', true, 'system'),
+('ROLE_STUDENT', 'std', true, 'system');
+
+-- Insert into public.user
+INSERT INTO public.user (phone_no, password, email, full_name, parent_name, alternate_number, address, profile_url, role_id, created_by, updated_by) VALUES 
+('1234567890', 'password123', 'admin@example.com', 'Admin User', 'John Doe', '0987654321', '123 Admin St', 'http://example.com/admin_profile.jpg', 1, 'system', 'system'),
+('2345678901', 'password123', 'instructor@example.com', 'Jane Instructor', 'Alice Doe', '0987654322', '456 Instructor Rd', 'http://example.com/instructor_profile.jpg', 2, 'system', 'system'),
+('3456789012', 'password123', 'student@example.com', 'Student Learner', 'Bob Doe', '0987654323', '789 Student Ln', 'http://example.com/student_profile.jpg', 3, 'system', 'system');
+
+-- Insert into class_master
+INSERT INTO class_master (name, address, city, is_main, start_date, fees, admission_fees, created_by, updated_by) VALUES 
+('Main Class', '123 Academy St', 'Cityville', true, '2023-01-15', '500', '100', 'system', 'system'),
+('Secondary Class', '456 Learning Rd', 'Townsville', false, '2023-03-01', '300', '50', 'system', 'system');
+
+-- Insert into belt_master
+INSERT INTO belt_master (colour, fees, level, portion, description, created_by, updated_by) VALUES 
+('White', '100', 1, 'Basic techniques', 'First belt in the system', 'system', 'system'),
+('Yellow', '150', 2, 'Intermediate techniques', 'Second belt in the system', 'system', 'system');
+
+-- Insert into user_class
+INSERT INTO user_class (user_lid, class_lid, belt_lid, created_by, updated_by) VALUES 
+(3, 1, 1, 'system', 'system'), -- Student assigned to Main Class with White belt
+(3, 2, 2, 'system', 'system'); -- Student also assigned to Secondary Class with Yellow belt
+
+-- Insert into user_belt_record
+INSERT INTO user_belt_record (user_lid, class_lid, belt_lid, exam_date, status, fees, location, created_by, updated_by) VALUES 
+(3, 1, 1, '2023-04-10', 'Passed', '50', 'Main Academy', 'system', 'system'),
+(3, 2, 2, '2023-06-15', 'Passed', '75', 'Secondary Academy', 'system', 'system');
+
+-- Insert into fees_type_master
+INSERT INTO fees_type_master (name, abbr, active, created_by) VALUES 
+('Monthly Fees', 'MF', true, 'system'),
+('Admission Fees', 'AF', true, 'system');
+
+-- Insert into user_fees
+INSERT INTO user_fees (user_lid, class_lid, fees_type_lid, fees, remark, created_by) VALUES 
+(3, 1, 1, '500', 'Paid for January 2023', 'system'),
+(3, 2, 2, '100', 'Admission fees for secondary class', 'system');
+
+-- Insert user_title
+INSERT INTO user_title (user_lid, title, description, active, created_at, created_by)
+VALUES
+    (1, 'jr', 'Junior', true, CURRENT_TIMESTAMP, 'system');

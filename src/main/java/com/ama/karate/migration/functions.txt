@@ -1,0 +1,87 @@
+DROP FUNCTION IF EXISTS public.student_creation;
+
+CREATE OR REPLACE FUNCTION public.student_creation(
+    input_json jsonb,
+    created_user_lid integer
+)
+RETURNS jsonb
+LANGUAGE 'plpgsql'
+COST 100
+VOLATILE PARALLEL UNSAFE
+AS $BODY$
+DECLARE
+    user_id INT;
+    user_exists BOOLEAN;
+BEGIN
+    -- Create a temp table to hold the data temporarily
+    CREATE TEMP TABLE temp_table (
+        phone_no VARCHAR(20),
+        email VARCHAR(100),
+        full_name VARCHAR(100),
+        parent_name VARCHAR(100),
+        alternate_number VARCHAR(20),
+        address VARCHAR(200),
+        role_lid INT,
+        class_lid INT,
+        admission_fees VARCHAR(100),
+        belt_lid INT
+    );
+
+    -- Insert the values from the JSON input into the temp table
+    INSERT INTO temp_table (phone_no, email, full_name, parent_name, alternate_number, address, role_lid, class_lid, admission_fees, belt_lid)
+    VALUES (
+        input_json->>'phone_no',
+        input_json->>'email',
+        input_json->>'full_name',
+        input_json->>'parent_name',
+        input_json->>'alternate_number',
+        input_json->>'address',
+        (input_json->>'role_lid')::INT,
+        (input_json->>'class_lid')::INT,
+        input_json->>'admission_fees',
+        (input_json->>'belt_lid')::INT
+    );
+
+    -- Check if the user already exists based on phone_no
+    SELECT EXISTS (SELECT 1 FROM public.user WHERE phone_no = (SELECT phone_no FROM temp_table)) INTO user_exists;
+    
+    IF user_exists THEN
+        RETURN jsonb_build_object('status', 409, 'message', 'User already exists!');
+    END IF;
+
+    -- Insert new user or update existing user (if conflict occurs) and retrieve the user ID
+    INSERT INTO public.user (phone_no, email, full_name, parent_name, alternate_number, address, role_id)
+    SELECT phone_no, email, full_name, parent_name, alternate_number, address, role_lid
+    FROM temp_table
+    ON CONFLICT (phone_no) DO UPDATE
+    SET 
+        email = EXCLUDED.email,
+        full_name = EXCLUDED.full_name,
+        parent_name = EXCLUDED.parent_name,
+        alternate_number = EXCLUDED.alternate_number,
+        address = EXCLUDED.address,
+        role_id = EXCLUDED.role_id
+    RETURNING id INTO user_id;
+
+    -- Insert user-role relation into user_role table
+    INSERT INTO user_role (user_lid, role_lid)
+    SELECT user_id, role_lid
+    FROM temp_table;
+
+    -- Insert user-class relation into user_class table
+    INSERT INTO user_class (user_lid, class_lid, belt_lid)
+    SELECT user_id, class_lid, belt_lid
+    FROM temp_table;
+
+    -- Insert user-fees into user_fees table
+    INSERT INTO user_fees (user_lid, class_lid, fees, remark)
+    SELECT user_id, class_lid, admission_fees, 'At the Time of Registration'
+    FROM temp_table;
+
+    -- Return success response
+    RETURN jsonb_build_object('status', 200, 'message', 'Student registered successfully!');
+END;
+$BODY$;
+
+
+------------------------------------------------------------------------------------------------
