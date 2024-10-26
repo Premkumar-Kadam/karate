@@ -14,25 +14,33 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ama.karate.dto.AuthDto;
+import com.ama.karate.utils.RedisService;
+
+import jakarta.servlet.http.HttpSession;
 
 @RestController
 public class Login {
     
     @Autowired
     private AuthenticationManager authenticationManager;
+    
+    @Autowired
+    private RedisService rs;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody AuthDto loginRequest) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody AuthDto loginRequest, HttpSession session) {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            // Authenticate user using AuthenticationManager
             Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getPhoneNo(), loginRequest.getPassword())
             );
 
             System.out.println("Authentication successful for " + authentication.toString());
             if (authentication.isAuthenticated()) {
+                String SessionKey = (String) session.getAttribute("sessionKey");
+                String sessionData = rs.getSession(SessionKey);
+                response.put("sessionData", sessionData);
                 response.put("status", "success");
                 response.put("message", "Login successful");
                 return ResponseEntity.accepted().body(response);
@@ -42,17 +50,19 @@ public class Login {
                 return ResponseEntity.status(401).body(response);
             }
         } catch (AuthenticationException e) {
+            e.printStackTrace();
             response.put("status", "error");
-            response.put("message", "Authentication failed");
+            response.put("message", "Internal Server Error");
             return ResponseEntity.status(401).body(response);
         }
     }
 
-    @PostMapping("/test")
-    public ResponseEntity<Map<String, Object>> test(){
+    @PostMapping("/profile")
+    public ResponseEntity<Map<String, Object>> test(HttpSession session){
         Map<String, Object> response = new HashMap<>();
-        response.put("status", "success");
-        response.put("message", "Login successful");
+        String SessionKey = (String) session.getAttribute("sessionKey");
+        String sessionData = rs.getSession(SessionKey);
+        response.put("sessionData", sessionData);
         return ResponseEntity.accepted().body(response);
     }
 
