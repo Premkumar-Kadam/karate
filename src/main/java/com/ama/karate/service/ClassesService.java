@@ -5,24 +5,24 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ama.karate.dao.instructor.InstructorClassesDao;
-import com.ama.karate.dao.instructor.InstructorStudentDao;
+import com.ama.karate.dao.userBasic.ClassesDao;
+import com.ama.karate.dao.userBasic.StudentsDao;
 import com.ama.karate.dto.ClassesDto;
 import com.ama.karate.dto.StudentDto;
-import com.ama.karate.interfaceService.InstructorInterfaceService;
+import com.ama.karate.interfaceService.UserInterfaceService;
 
 import jakarta.servlet.http.HttpSession;
 
 @Service
-public class InstructorService implements InstructorInterfaceService{
+public class ClassesService implements UserInterfaceService{
 
-    @Autowired InstructorClassesDao icd;
+    @Autowired ClassesDao icd;
     
-    @Autowired InstructorStudentDao isd;
+    @Autowired StudentsDao isd;
 
     @Override
-    public List<ClassesDto> bringInstructorClasses(String phoneNo) {
-        return icd.bringInstructorClasses(phoneNo);
+    public List<ClassesDto> bringUserClasses(String phoneNo) {
+        return icd.bringUserClasses(phoneNo);
     }
 
     @Override

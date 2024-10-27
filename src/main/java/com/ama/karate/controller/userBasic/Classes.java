@@ -1,4 +1,4 @@
-package com.ama.karate.controller.instructor;
+package com.ama.karate.controller.userBasic;
 
 import java.util.List;
 
@@ -7,48 +7,48 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ama.karate.dto.ClassesDto;
 import com.ama.karate.dto.StudentDto;
-import com.ama.karate.interfaceService.InstructorInterfaceService;
+import com.ama.karate.interfaceService.UserInterfaceService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpSession;
 
 @RestController
-public class InstructorClasses {
+public class Classes {
 
-    @Autowired InstructorInterfaceService iis;
+    @Autowired UserInterfaceService iis;
 
     @Autowired ObjectMapper om;
     
-    @PostMapping("/instructor-classes")
+    @PostMapping("/user-classes")
     public ResponseEntity<String> instructorClasses(HttpSession session) {
 
         try {
             String phoneNo = (String) session.getAttribute("phoneNo");
-            List<ClassesDto> response = iis.bringInstructorClasses(phoneNo);
+            List<ClassesDto> response = iis.bringUserClasses(phoneNo);
 
-            String jsonResponse = om.writeValueAsString(response);
-            return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
-        } catch (JsonProcessingException e) {
-            return new ResponseEntity<>("JsonProcessingException", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Exception", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping("/class-studnets")
-    public ResponseEntity<String> classStudnets(@RequestBody int classId, HttpSession session) {
+    public ResponseEntity<String> classStudnets(@RequestParam int classId, HttpSession session) {
 
         try {
             String phoneNo = (String) session.getAttribute("phoneNo");
             List<StudentDto> response = iis.bringClassStudents(phoneNo, classId);
 
-            String jsonResponse = om.writeValueAsString(response);
-            return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
-        } catch (JsonProcessingException e) {
-            return new ResponseEntity<>("JsonProcessingException", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Exception", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
     }
 }

@@ -10,9 +10,9 @@ import com.ama.karate.dto.StudentDto;
 import jakarta.servlet.http.HttpSession;
 
 @Service
-public interface InstructorInterfaceService {
+public interface UserInterfaceService {
 
-    List<ClassesDto> bringInstructorClasses(String phoneNo);
+    List<ClassesDto> bringUserClasses(String phoneNo);
 
     List<StudentDto> bringClassStudents(String phoneNo, int classId);
 

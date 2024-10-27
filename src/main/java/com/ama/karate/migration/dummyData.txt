@@ -7,21 +7,21 @@ INSERT INTO roles (name, abbr, created_by) VALUES
 -- Insert data into public.user table
 -- Assume user with ID 1 is an Admin, user with ID 2 is an Instructor, and users 3-10 are Students.
 INSERT INTO public.user (phone_no, password, email, full_name, parent_name, alternate_number, address, profile_url, role_id, created_by, updated_by) VALUES
-('1234567890', 'ama@123', 'admin@karate.com', 'Admin User', 'System Admin', '0987654321', '123 Main St', '/images/admin.jpg', 2, 'system', 'system'),  -- Admin
-('2345678901', 'ama@123', 'instructor@karate.com', 'Instructor User', 'Sensei Doe', '0987654322', '124 Main St', '/images/instructor.jpg', 3, 'system', 'system'),  -- Instructor
-('3456789012', 'ama@123', 'student1@karate.com', 'Student One', 'Parent One', '0987654323', '125 Main St', '/images/student1.jpg', 1, 'system', 'system'),
-('4567890123', 'ama@123', 'student2@karate.com', 'Student Two', 'Parent Two', '0987654324', '126 Main St', '/images/student2.jpg', 1, 'system', 'system'),
-('5678901234', 'ama@123', 'student3@karate.com', 'Student Three', 'Parent Three', '0987654325', '127 Main St', '/images/student3.jpg', 1, 'system', 'system'),
-('6789012345', 'ama@123', 'student4@karate.com', 'Student Four', 'Parent Four', '0987654326', '128 Main St', '/images/student4.jpg', 1, 'system', 'system'),
-('7890123456', 'ama@123', 'student5@karate.com', 'Student Five', 'Parent Five', '0987654327', '129 Main St', '/images/student5.jpg', 1, 'system', 'system'),
-('8901234567', 'ama@123', 'student6@karate.com', 'Student Six', 'Parent Six', '0987654328', '130 Main St', '/images/student6.jpg', 1, 'system', 'system'),
-('9012345678', 'ama@123', 'student7@karate.com', 'Student Seven', 'Parent Seven', '0987654329', '131 Main St', '/images/student7.jpg', 1, 'system', 'system'),
-('0123456789', 'ama@123', 'student8@karate.com', 'Student Eight', 'Parent Eight', '0987654330', '132 Main St', '/images/student8.jpg', 1, 'system', 'system');
+('1234567890', '$2a$10$kZ.rgnyhaNSCf0gaK6CE.egqfiyEZoY5cVe0fV/cvzlj5fCODaXYa', 'admin@karate.com', 'Admin User', 'System Admin', '0987654321', '123 Main St', '/images/admin.jpg', 2, 'system', 'system'),  -- Admin
+('2345678901', '$2a$10$kZ.rgnyhaNSCf0gaK6CE.egqfiyEZoY5cVe0fV/cvzlj5fCODaXYa', 'instructor@karate.com', 'Instructor User', 'Sensei Doe', '0987654322', '124 Main St', '/images/instructor.jpg', 3, 'system', 'system'),  -- Instructor
+('3456789012', '$2a$10$kZ.rgnyhaNSCf0gaK6CE.egqfiyEZoY5cVe0fV/cvzlj5fCODaXYa', 'student1@karate.com', 'Student One', 'Parent One', '0987654323', '125 Main St', '/images/student1.jpg', 1, 'system', 'system'),
+('4567890123', '$2a$10$kZ.rgnyhaNSCf0gaK6CE.egqfiyEZoY5cVe0fV/cvzlj5fCODaXYa', 'student2@karate.com', 'Student Two', 'Parent Two', '0987654324', '126 Main St', '/images/student2.jpg', 1, 'system', 'system'),
+('5678901234', '$2a$10$kZ.rgnyhaNSCf0gaK6CE.egqfiyEZoY5cVe0fV/cvzlj5fCODaXYa', 'student3@karate.com', 'Student Three', 'Parent Three', '0987654325', '127 Main St', '/images/student3.jpg', 1, 'system', 'system'),
+('6789012345', '$2a$10$kZ.rgnyhaNSCf0gaK6CE.egqfiyEZoY5cVe0fV/cvzlj5fCODaXYa', 'student4@karate.com', 'Student Four', 'Parent Four', '0987654326', '128 Main St', '/images/student4.jpg', 1, 'system', 'system'),
+('7890123456', '$2a$10$kZ.rgnyhaNSCf0gaK6CE.egqfiyEZoY5cVe0fV/cvzlj5fCODaXYa', 'student5@karate.com', 'Student Five', 'Parent Five', '0987654327', '129 Main St', '/images/student5.jpg', 1, 'system', 'system'),
+('8901234567', '$2a$10$kZ.rgnyhaNSCf0gaK6CE.egqfiyEZoY5cVe0fV/cvzlj5fCODaXYa', 'student6@karate.com', 'Student Six', 'Parent Six', '0987654328', '130 Main St', '/images/student6.jpg', 1, 'system', 'system'),
+('9012345678', '$2a$10$kZ.rgnyhaNSCf0gaK6CE.egqfiyEZoY5cVe0fV/cvzlj5fCODaXYa', 'student7@karate.com', 'Student Seven', 'Parent Seven', '0987654329', '131 Main St', '/images/student7.jpg', 1, 'system', 'system'),
+('0123456789', '$2a$10$kZ.rgnyhaNSCf0gaK6CE.egqfiyEZoY5cVe0fV/cvzlj5fCODaXYa', 'student8@karate.com', 'Student Eight', 'Parent Eight', '0987654330', '132 Main St', '/images/student8.jpg', 1, 'system', 'system');
 
 -- Insert data into class_master table
-INSERT INTO class_master (name, address, city, is_main, start_date, fees, admission_fees, created_by, updated_by) VALUES
-('Karate Basics', '123 Elm St', 'City A', TRUE, '2023-01-15', '5000', '1000', 'system', 'system'),
-('Advanced Karate', '124 Elm St', 'City B', FALSE, '2023-01-15', '6000', '1200', 'system', 'system');
+INSERT INTO class_master (name, address, city, is_main, start_date, timing, fees, admission_fees, created_by, updated_by) VALUES
+('Karate Basics', '123 Elm St', 'City A', TRUE, '2023-01-15', '["Monday 12PM to 2PM","Friday 12PM to 2PM"]', '5000', '1000', 'system', 'system'),
+('Advanced Karate', '124 Elm St', 'City B', FALSE, '2023-01-15', '["Tuesday 12PM to 2PM","Saturday 12PM to 2PM"]', '6000', '1200', 'system', 'system');
 
 -- Insert data into belt_master table
 INSERT INTO belt_master (colour, fees, level, portion, description, created_by, updated_by) VALUES
@@ -35,8 +35,8 @@ INSERT INTO belt_master (colour, fees, level, portion, description, created_by, 
 -- Insert data into user_class table
 -- Instructor (user_id 2) teaches two classes (class_id 1 and class_id 2) with multiple students enrolled in each.
 INSERT INTO user_class (user_lid, class_lid, belt_lid, created_by, updated_by) VALUES
-(2, 1, 1, 'system', 'system'),  -- Instructor for Karate Basics
-(2, 2, 2, 'system', 'system'),  -- Instructor for Advanced Karate
+(2, 1, 6, 'system', 'system'),  -- Instructor for Karate Basics
+(2, 2, 6, 'system', 'system'),  -- Instructor for Advanced Karate
 (3, 1, 1, 'system', 'system'),  -- Student 1 in Karate Basics with White Belt
 (4, 1, 1, 'system', 'system'),  -- Student 2 in Karate Basics with White Belt
 (5, 1, 1, 'system', 'system'),  -- Student 3 in Karate Basics with White Belt

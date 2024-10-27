@@ -78,13 +78,13 @@ public class DatabaseValidator {
     }
 
     private boolean tableExists(DatabaseMetaData metaData, String tableName) throws SQLException {
-        try (ResultSet tables = metaData.getTables(null, "public", tableName, null)) {  // Specify "public" schema
+        try (ResultSet tables = metaData.getTables(null, "public", tableName, null)) { 
             return tables.next();
         }
     }
     
     private boolean columnExists(DatabaseMetaData metaData, String tableName, String columnName) throws SQLException {
-        try (ResultSet columns = metaData.getColumns(null, "public", tableName, columnName)) {  // Specify "public" schema
+        try (ResultSet columns = metaData.getColumns(null, "public", tableName, columnName)) { 
             return columns.next();
         }
     }

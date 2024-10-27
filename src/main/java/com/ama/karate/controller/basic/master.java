@@ -42,9 +42,8 @@ public class Master {
         try {
             List<BeltDto> response = mis.bringBeltList();
 
-            String jsonResponse = om.writeValueAsString(response);
-            return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
-        } catch (JsonProcessingException e) {
+            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity<>("JsonProcessingException", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -53,7 +52,6 @@ public class Master {
     public ResponseEntity<String> allStudent(HttpSession session) {
 
         try {
-            String phoneNo = (String) session.getAttribute("phoneNo");
             List<StudentDto> response = mis.bringAllStudents();
 
             String jsonResponse = om.writeValueAsString(response);

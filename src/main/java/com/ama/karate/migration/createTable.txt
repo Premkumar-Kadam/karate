@@ -42,6 +42,7 @@ CREATE TABLE class_master (
     city VARCHAR(255) NOT NULL,
     is_main BOOLEAN NOT NULL DEFAULT FALSE,
     start_date DATE NOT NULL,
+    timing TEXT NOT NULL,
     fees VARCHAR(100) NOT NULL,
     admission_fees VARCHAR(100) NOT NULL, -- Corrected spelling
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

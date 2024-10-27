@@ -1,73 +1,60 @@
 package com.ama.karate.dto;
 
+import java.util.List;
+
 public class ClassesDto {
 
-    private int classLid;
-    private String className;
-    private int classCount;
-    private String classAddress;
-    private String classCity;
-    private String classFees;
-    private String admissionFees;
-    private Boolean isMain;
+    private String classesName;
+    private String instructorName;
+    private String classesAddress;
+    private String classesTiming;
+    private int totalStudents;
+    private Long classesLid;
 
-    public int getClassLid() {
-        return classLid;
+    public String getClassesName() {
+        return classesName;
     }
-    public void setClassLid(int classLid) {
-        this.classLid = classLid;
+    public void setClassesName(String classesName) {
+        this.classesName = classesName;
     }
-    public String getClassName() {
-        return className;
+    public String getInstructorName() {
+        return instructorName;
     }
-    public void setClassName(String className) {
-        this.className = className;
+    public void setInstructorName(String instructorName) {
+        this.instructorName = instructorName;
     }
-    public int getClassCount() {
-        return classCount;
+    public String getClassesAddress() {
+        return classesAddress;
     }
-    public void setClassCount(int classCount) {
-        this.classCount = classCount;
+    public void setClassesAddress(String classesAddress) {
+        this.classesAddress = classesAddress;
     }
-    public String getClassAddress() {
-        return classAddress;
+    public String getClassesTiming() {
+        return classesTiming;
     }
-    public void setClassAddress(String classAddress) {
-        this.classAddress = classAddress;
+    public void setClassesTiming(String classesTiming) {
+        this.classesTiming = classesTiming;
     }
-    public String getClassCity() {
-        return classCity;
+    public int getTotalStudents() {
+        return totalStudents;
     }
-    public void setClassCity(String classCity) {
-        this.classCity = classCity;
+    public void setTotalStudents(int totalStudents) {
+        this.totalStudents = totalStudents;
     }
-    public String getClassFees() {
-        return classFees;
+    public Long getClassesLid() {
+        return classesLid;
     }
-    public void setClassFees(String classFees) {
-        this.classFees = classFees;
+    public void setClassesLid(Long classesLid) {
+        this.classesLid = classesLid;
     }
-    public String getAdmissionFees() {
-        return admissionFees;
-    }
-    public void setAdmissionFees(String admissionFees) {
-        this.admissionFees = admissionFees;
-    }
-    public Boolean getIsMain() {
-        return isMain;
-    }
-    public void setIsMain(Boolean isMain) {
-        this.isMain = isMain;
-    }
-    
     @Override
     public String toString() {
-        return "Classes [classLid=" + classLid + ", className=" + className + ", classCount=" + classCount
-                + ", classAddress=" + classAddress + ", classCity=" + classCity + ", classFees=" + classFees
-                + ", admissionFees=" + admissionFees + ", isMain=" + isMain + "]";
+        return "[classesName=" + classesName + ", instructorName=" + instructorName + ", classesAddress="
+                + classesAddress + ", classesTiming=" + classesTiming + ", totalStudents=" + totalStudents
+                + ", classesLid=" + classesLid + "]";
     }
-    
+
     
 
-
+    
 }
