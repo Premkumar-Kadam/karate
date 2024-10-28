@@ -31,7 +31,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String phoneNo = authentication.getName();
         String password = (String) authentication.getCredentials();
 
-        System.out.println("username :::::::::::::"+phoneNo+" password :::::::::::::"+password);
         AuthDto reqAuthDto = new AuthDto();
         reqAuthDto.setPhoneNo(phoneNo);
         reqAuthDto.setPassword(password);

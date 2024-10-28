@@ -1,4 +1,4 @@
-package com.ama.karate.controller.instructor;
+package com.ama.karate.controller.userBasic;
 
 import java.util.List;
 
@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ama.karate.dto.StudentDto;
-import com.ama.karate.interfaceService.InstructorInterfaceService;
+import com.ama.karate.interfaceService.UserInterfaceService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpSession;
 
 @RestController
-public class InstructorStudent {
+public class Students {
 
-    @Autowired InstructorInterfaceService iis;
+    @Autowired UserInterfaceService iis;
 
     @Autowired ObjectMapper om;
     

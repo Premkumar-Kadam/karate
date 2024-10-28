@@ -1,11 +1,82 @@
-----login Query
+------------------------------------------> /profile
 
-SELECT DISTINCT pu.id AS userLid, pu.phone_no AS phoneNo, rr.name AS userRole, ut.title, pu.profile_url AS profileUrl, bm.colour AS userBelt, pu.email, pu.full_name AS fullName, 
-	   pu.address
-FROM public.user pu
-INNER JOIN roles rr ON rr.id = pu.role_id
-INNER JOIN user_class uc ON uc.user_lid = pu.id
-INNER JOIN class_master cm ON cm.id = uc.class_lid
-INNER JOIN belt_master bm ON bm.id = uc.belt_lid
-LEFT JOIN user_title ut ON ut.user_lid = pu.id 
-WHERE pu.id = 1;
+SELECT DISTINCT
+    pu.id AS userLid,
+    pu.phone_no AS phoneNo,
+    rr.name AS userRole,
+    ut.title,
+    pu.profile_url AS profileUrl,
+    bm.colour AS userBelt,
+    pu.email,
+    pu.full_name AS fullName,
+    pu.address,
+    instructor_stats.total_classes,
+    instructor_stats.total_students
+FROM 
+    public.user pu
+INNER JOIN 
+    roles rr ON rr.id = pu.role_id
+INNER JOIN 
+    user_class uc ON uc.user_lid = pu.id
+INNER JOIN 
+    class_master cm ON cm.id = uc.class_lid
+INNER JOIN 
+    belt_master bm ON bm.id = uc.belt_lid
+LEFT JOIN 
+    user_title ut ON ut.user_lid = pu.id
+LEFT JOIN (
+    SELECT 
+        instructor.id AS instructor_id,
+        COUNT(DISTINCT uc.class_lid) AS total_classes,
+        COUNT(DISTINCT student.id) AS total_students
+    FROM 
+        user_class uc
+    JOIN 
+        public.user instructor ON uc.user_lid = instructor.id
+    JOIN 
+        user_class student_classes ON student_classes.class_lid = uc.class_lid
+    JOIN 
+        public.user student ON student_classes.user_lid = student.id
+    WHERE 
+        instructor.role_id = (SELECT id FROM roles WHERE name = 'Instructor')
+        AND student.role_id = (SELECT id FROM roles WHERE name = 'Student')
+    GROUP BY 
+        instructor.id
+) AS instructor_stats ON pu.id = instructor_stats.instructor_id
+WHERE 
+    pu.id = 2;
+
+
+------------------------------------------> /user-classes
+
+SELECT
+    cm.name AS classesName,
+    ARRAY_AGG(DISTINCT instructor.full_name) AS institutionName, -- Change to instructor's name
+    cm.address AS classesAddress,
+    ARRAY_AGG(DISTINCT cm.timing) AS classesTiming, 
+    COUNT(DISTINCT student.id) AS totalStudents,
+    cm.id AS classesLid
+FROM 
+    user_class uc
+JOIN 
+    class_master cm ON uc.class_lid = cm.id
+JOIN 
+    public.user instructor ON uc.user_lid = instructor.id
+JOIN 
+    user_class student_class ON student_class.class_lid = cm.id
+JOIN 
+    public.user student ON student_class.user_lid = student.id
+WHERE 
+    instructor.id = 2 
+GROUP BY 
+    cm.name, cm.address, cm.id;
+
+
+------------------------------------------> /class-studnets
+
+SELECT student.full_name AS studentName, bm.colour AS studentBelt, student.profile_url AS studentProfileUrl, student.id AS student_lid 
+FROM public.user student
+INNER JOIN user_class uc ON uc.user_lid = student.id
+INNER JOIN belt_master bm ON uc.belt_lid = bm.id
+INNER JOIN roles ur ON student.role_id = ur.id
+WHERE uc.class_lid = 1 AND ur.abbr = 'STD';

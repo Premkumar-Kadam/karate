@@ -1,4 +1,4 @@
--------------------After Login Successfull - login Query
+-------------------After Login Successfull - login Query /profile
 {
   "userLid" : 1,
   "phoneNo" : "9894949280",
@@ -16,7 +16,7 @@
   "sessionKey" : "",
 }
 
--------------------classes details based on user_lid
+-------------------classes details based on user_lid  /user-classes
 [
     {
         "classes_name" : "",
