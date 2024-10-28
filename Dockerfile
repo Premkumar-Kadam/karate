@@ -1,5 +1,5 @@
 # Use the official OpenJDK image as the base image
-FROM openjdk:17-jdk-slim
+FROM openjdk:21-jdk-slim
 # Set the working directory inside the container
 WORKDIR /app
 # Copy the jar file from the target directory into the container
