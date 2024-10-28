@@ -1,14 +1,10 @@
-# Use the official Tomcat image as the base image
-FROM tomcat:10.1-jdk21-corretto
-
+# Use the official OpenJDK image as the base image
+FROM openjdk:17-jdk-slim
 # Set the working directory inside the container
-WORKDIR /usr/local/tomcat/webapps
-
-# Copy the WAR file from the target directory into the Tomcat webapps directory
-COPY target/*.war /usr/local/tomcat/webapps/yourapp.war
-
+WORKDIR /app
+# Copy the jar file from the target directory into the container
+COPY target/*.jar app.jar
 # Expose the application port (adjust if necessary)
 EXPOSE 8085
-
-# Start Tomcat server
-CMD ["catalina.sh", "run"]
+# Command to run the application
+ENTRYPOINT ["java", "-jar", "app.jar"]
