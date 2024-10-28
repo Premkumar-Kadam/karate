@@ -21,13 +21,6 @@ pipeline {
             }
         }
 
-        stage('Run Trivy Security Scan') {
-            steps {
-                // Trivy command to scan for vulnerabilities
-                sh 'trivy image --format json --output trivy-report.json ${DOCKER_IMAGE}:${IMAGE_TAG}'
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 script {
@@ -36,7 +29,14 @@ pipeline {
                 }
             }
         }
-
+        
+        stage('Run Trivy Security Scan') {
+            steps {
+                // Trivy command to scan for vulnerabilities
+                sh 'trivy image --format json --output trivy-report.json ${DOCKER_IMAGE}:${IMAGE_TAG}'
+            }
+        }
+        
         stage('Stop and Remove Old Container') {
             steps {
                 script {
