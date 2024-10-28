@@ -1,6 +1,5 @@
 package com.ama.karate.dto;
 
-import java.util.List;
 
 public class ClassesDto {
 

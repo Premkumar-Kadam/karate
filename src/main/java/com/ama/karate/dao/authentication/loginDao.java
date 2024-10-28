@@ -80,4 +80,36 @@ public class loginDao {
             return new SessionDto();
         }
     }
+
+    public AuthDto bringUserEmail(String phoneNo) {
+        try {
+            String SQL = "SELECT email FROM public.user WHERE phone_no = ? AND active = TRUE";
+    
+            return jt.queryForObject(SQL, new BeanPropertyRowMapper<>(AuthDto.class), phoneNo);
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+            return new AuthDto();
+        }
+    }
+
+    public boolean insertOtp(String phoneNo, String otp, String otpFor) {
+        String sql = "INSERT INTO otp (phone_no, otp, otp_for, created_by) " +
+                        "VALUES (?, ?, ?, ?)";
+
+        try {
+            jt.update(sql, phoneNo, otp, otpFor, phoneNo);
+            return true;
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean isOtpValid(String phoneNo, String otp) {
+        String sql = "SELECT COUNT(*) FROM otp WHERE phone_no = ? AND otp = ? AND active = TRUE AND valid_till > NOW()";
+
+        Integer count = jt.queryForObject(sql, Integer.class, phoneNo, otp);
+        return count != null && count > 0; // Returns true if OTP is valid
+    }
+
 }
