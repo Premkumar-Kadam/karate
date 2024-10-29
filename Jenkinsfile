@@ -26,10 +26,18 @@ pipeline {
             }
         }
         
-	stage('OWASP Dependency Check') {
+        stage('OWASP Dependency Check') {
             steps {
-               dependencyCheck additionalArguments: ' --scan ./ ', odcInstallation: 'DC'
+                // Set the working directory to the root of the project if needed
+                dir("${WORKSPACE}") {
+                    // Run the OWASP Dependency Check
+                    dependencyCheck additionalArguments: '--scan ${WORKSPACE}/target', odcInstallation: 'DC'
+                }
+            }
+            post {
+                always {
                     dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+                }
             }
         }
         
@@ -121,7 +129,7 @@ pipeline {
                     from: 'premkumar.kadam@etpgroup.com',
                     replyTo: 'premkumar.kadam@etpgroup.com',
                     mimeType: 'text/html',
-                    attachmentsPattern: '**/trivy-report.html',
+                    attachmentsPattern: '**/dependency-check-report.xml',
                     attachLog: true
                 )
             }
