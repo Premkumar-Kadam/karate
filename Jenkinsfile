@@ -4,9 +4,9 @@ pipeline {
     environment {
         DOCKER_IMAGE = "myapp-karate"
         CONTAINER_NAME = "myapp-container"
-       // IMAGE_TAG = "${env.BUILD_NUMBER}" // Tag the Docker image with the build number
-        IMAGE_TAG = "latest"
+        IMAGE_TAG = "latest" // or "${env.BUILD_NUMBER}"
         SONAR_HOST_URL = "http://172.24.2.184:9001"
+        DEPENDENCY_CHECK_DIR = "${WORKSPACE}/target"
     }
 
     options {
@@ -15,24 +15,25 @@ pipeline {
     }
 
     stages {
-        stage('Code-Compile') {
-            steps {
-               sh "mvn clean compile"
+        stage('Code Compile and Unit Tests') {
+            parallel {
+                stage('Code Compile') {
+                    steps {
+                        sh "mvn clean compile"
+                    }
+                }
+                stage('Unit Tests') {
+                    steps {
+                        sh "mvn test"
+                    }
+                }
             }
         }
-        
-        stage('Unit Tests') {
-            steps {
-               sh "mvn test"
-            }
-        }
-        
+
         stage('OWASP Dependency Check') {
             steps {
-                // Set the working directory to the root of the project if needed
                 dir("${WORKSPACE}") {
-                    // Run the OWASP Dependency Check
-                    dependencyCheck additionalArguments: '--scan ${WORKSPACE}/target', odcInstallation: 'DC'
+                    dependencyCheck additionalArguments: "--scan ${DEPENDENCY_CHECK_DIR}", odcInstallation: 'DC'
                 }
             }
             post {
@@ -41,10 +42,9 @@ pipeline {
                 }
             }
         }
-        
+
         stage('SonarQube Analysis') {
             steps {
-                // Fetch SonarQube token from Jenkins credentials
                 withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
                     withSonarQubeEnv('SonarQube') {
                         sh '''
@@ -58,43 +58,42 @@ pipeline {
                 }
             }
         }
-        
-        stage('Code-Build') {
+
+        stage('Code Build') {
             steps {
-               sh "mvn clean package"
+                sh "mvn clean package"
             }
         }
-        
+
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Build Docker image with versioned tag
+                    // Build Docker image
                     docker.build("${DOCKER_IMAGE}:${IMAGE_TAG}")
                 }
             }
         }
-        
+
         stage('Run Trivy Security Scan') {
             steps {
                 // Trivy command to scan for vulnerabilities
                 sh 'trivy image --format json --output trivy-report.json ${DOCKER_IMAGE}:${IMAGE_TAG}'
             }
         }
-        
-        stage('Stop and Remove Old Container') {
+
+        stage('Manage Old Container') {
             steps {
                 script {
-                    echo "Checking for existing container with name: ${CONTAINER_NAME}"
+                    echo "Checking for existing container: ${CONTAINER_NAME}"
 
-                    def containerExists = sh(script: "docker ps -a --format '{{.Names}}' | grep -w \"${CONTAINER_NAME}\" || true", returnStdout: true).trim()
+                    def containerExists = sh(script: "docker ps -a --filter name=${CONTAINER_NAME} -q", returnStdout: true).trim()
 
-                    // Check if the container exists
                     if (containerExists) {
-                        echo "Container found. Stopping and removing: ${CONTAINER_NAME}"
-                        sh "docker stop ${CONTAINER_NAME}"
-                        sh "docker rm ${CONTAINER_NAME}"
+                        echo "Stopping and removing existing container: ${CONTAINER_NAME}"
+                        sh "docker stop ${CONTAINER_NAME} || true"
+                        sh "docker rm ${CONTAINER_NAME} || true"
                     } else {
-                        echo "No existing container with name ${CONTAINER_NAME} found."
+                        echo "No existing container found."
                     }
                 }
             }
@@ -113,16 +112,11 @@ pipeline {
     post {
         always {
             script {
-
                 def jobName = env.JOB_NAME
                 def buildNumber = env.BUILD_NUMBER
                 def branchName = env.BRANCH_NAME ?: 'main'
-
-                // Determine the status of the pipeline (SUCCESS/FAILURE)
-                def pipelineStatus = currentBuild.result ?: 'UNKNOWN'
-
-                def bannerColor = pipelineStatus.toUpperCase() == 'SUCCESS' ? 'green' : 'red'
-
+                def pipelineStatus = currentBuild.result ?: 'SUCCESS'
+                def bannerColor = (pipelineStatus == 'SUCCESS') ? 'green' : 'red'
                 def buildDuration = currentBuild.durationString
 
                 def body = """<html>
