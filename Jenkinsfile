@@ -6,6 +6,7 @@ pipeline {
         CONTAINER_NAME = "myapp-container"
        // IMAGE_TAG = "${env.BUILD_NUMBER}" // Tag the Docker image with the build number
         IMAGE_TAG = "latest"
+        SONAR_HOST_URL = "http://172.24.2.184:9001"
     }
 
     options {
@@ -43,20 +44,24 @@ pipeline {
         
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh '''
-                    mvn sonar:sonar \
-                    -Dsonar.projectKey=ama:karate \
-                    -Dsonar.projectName=Karate Backend\
-                    -Dsonar.host.url=http://172.24.2.184:9001 \
-                    -Dsonar.login=${SONAR_TOKEN} 
-                    '''
+                // Fetch SonarQube token from Jenkins credentials
+                withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
+                    withSonarQubeEnv('SonarQube') {
+                        sh '''
+                        mvn sonar:sonar \
+                            -Dsonar.projectKey=ama:karate \
+                            -Dsonar.projectName="Karate Backend" \
+                            -Dsonar.host.url=${SONAR_HOST_URL} \
+                            -Dsonar.login=${SONAR_TOKEN}
+                        '''
+                    }
                 }
             }
         }
 
         stage('Quality Gate') {
             steps {
+                // Wait for the quality gate result and fail the build if the gate is not met
                 waitForQualityGate abortPipeline: true
             }
         }
