@@ -31,7 +31,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authenticationProvider(customAuthProvider)
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/authenticate","/forgot-password").permitAll()
+                .requestMatchers("/authenticate","/forgot-password","/change-password").permitAll()
                 .anyRequest().access((authentication, context) -> {
                     HttpServletRequest request = context.getRequest();
                     HttpSession session = request.getSession(false);
