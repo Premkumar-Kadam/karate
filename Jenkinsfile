@@ -47,13 +47,21 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
                     withSonarQubeEnv('SonarQube') {
-                        sh '''
-                        mvn sonar:sonar \
-                            -Dsonar.projectKey=ama:karate \
-                            -Dsonar.projectName="Karate Backend" \
-                            -Dsonar.host.url=${SONAR_HOST_URL} \
-                            -Dsonar.login=${SONAR_TOKEN}
-                        '''
+                        script {
+                            def sonarResult = sh(
+                                script: '''
+                                mvn sonar:sonar \
+                                    -Dsonar.projectKey=ama:karate \
+                                    -Dsonar.projectName="Karate Backend" \
+                                    -Dsonar.host.url=${SONAR_HOST_URL} \
+                                    -Dsonar.login=${SONAR_TOKEN}
+                                ''',
+                                returnStatus: true
+                            )
+                            if (sonarResult != 0) {
+                                error("SonarQube analysis failed!")
+                            }
+                        }
                     }
                 }
             }
@@ -76,8 +84,18 @@ pipeline {
 
         stage('Run Trivy Security Scan') {
             steps {
-                // Trivy command to scan for vulnerabilities
-                sh 'trivy image --format json --output trivy-report.json ${DOCKER_IMAGE}:${IMAGE_TAG}'
+                script {
+                    // Run Trivy command to scan for vulnerabilities
+                    sh 'trivy image --format json --output trivy-report.json ${DOCKER_IMAGE}:${IMAGE_TAG}'
+
+                    // Optionally, you can fail the build if vulnerabilities are found
+                    def trivyResult = readFile('trivy-report.json')
+                    if (trivyResult.contains('"vulnerabilities": []')) {
+                        echo "No vulnerabilities found in the Docker image."
+                    } else {
+                        error("Vulnerabilities found in the Docker image!")
+                    }
+                }
             }
         }
 
