@@ -4,7 +4,8 @@ pipeline {
     environment {
         DOCKER_IMAGE = "myapp-karate"
         CONTAINER_NAME = "myapp-container"
-        IMAGE_TAG = "${env.BUILD_NUMBER}" // Tag the Docker image with the build number
+       // IMAGE_TAG = "${env.BUILD_NUMBER}" // Tag the Docker image with the build number
+        IMAGE_TAG = "latest"
     }
 
     options {
@@ -13,14 +14,31 @@ pipeline {
     }
 
     stages {
-
-        stage('Build with Maven') {
+        stage('Code-Compile') {
             steps {
-                // Build the Java project using Maven, skipping tests for faster build
-                sh 'mvn clean package -DskipTests'
+               sh "mvn clean compile"
             }
         }
-
+        
+        stage('Unit Tests') {
+            steps {
+               sh "mvn test"
+            }
+        }
+        
+		stage('OWASP Dependency Check') {
+            steps {
+               dependencyCheck additionalArguments: ' --scan ./ ', odcInstallation: 'DC'
+                    dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+        }
+        
+        stage('Code-Build') {
+            steps {
+               sh "mvn clean package"
+            }
+        }
+        
         stage('Build Docker Image') {
             steps {
                 script {
