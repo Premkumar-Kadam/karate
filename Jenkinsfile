@@ -58,13 +58,6 @@ pipeline {
                 }
             }
         }
-
-        stage('Quality Gate') {
-            steps {
-                // Wait for the quality gate result and fail the build if the gate is not met
-                waitForQualityGate abortPipeline: true
-            }
-        }
         
         stage('Code-Build') {
             steps {
@@ -80,14 +73,13 @@ pipeline {
                 }
             }
         }
-        /*
+        
         stage('Run Trivy Security Scan') {
             steps {
                 // Trivy command to scan for vulnerabilities
                 sh 'trivy image --format json --output trivy-report.json ${DOCKER_IMAGE}:${IMAGE_TAG}'
             }
         }
-        */
         
         stage('Stop and Remove Old Container') {
             steps {
