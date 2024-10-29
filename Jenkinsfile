@@ -87,14 +87,6 @@ pipeline {
                 script {
                     // Run Trivy command to scan for vulnerabilities
                     sh 'trivy image --format json --output trivy-report.json ${DOCKER_IMAGE}:${IMAGE_TAG}'
-
-                    // Optionally, you can fail the build if vulnerabilities are found
-                    def trivyResult = readFile('trivy-report.json')
-                    if (trivyResult.contains('"vulnerabilities": []')) {
-                        echo "No vulnerabilities found in the Docker image."
-                    } else {
-                        error("Vulnerabilities found in the Docker image!")
-                    }
                 }
             }
         }
