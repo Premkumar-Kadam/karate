@@ -14,7 +14,7 @@ public class loginDao {
 
     @Autowired JdbcTemplate jt;
 
-    // To fetch the password by phone number
+    //  To fetch the password by phone number
     public AuthDto userPassword(String phoneNo) {
         System.out.println("user phone in dao : 0"+phoneNo);
         try {
@@ -106,10 +106,50 @@ public class loginDao {
     }
 
     public boolean isOtpValid(String phoneNo, String otp) {
-        String sql = "SELECT COUNT(*) FROM otp WHERE phone_no = ? AND otp = ? AND active = TRUE AND valid_till > NOW()";
+        String sql = "WITH updated AS (" + 
+                        "     UPDATE otp" + 
+                        "     SET is_valid = TRUE" + 
+                        "     WHERE id = (" + 
+                        "         SELECT id" + 
+                        "         FROM otp" + 
+                        "         WHERE phone_no = ?" + 
+                        "           AND otp = ?" + 
+                        "           AND valid_till > CURRENT_TIMESTAMP" + 
+                        "           AND is_valid = FALSE" + 
+                        "         ORDER BY id DESC" + 
+                        "         LIMIT 1" + 
+                        "     )" + 
+                        "     RETURNING 1" + 
+                        " )" + 
+                        " SELECT CASE " + 
+                        "            WHEN EXISTS (SELECT 1 FROM updated) THEN TRUE" + 
+                        "            ELSE FALSE" + 
+                        "        END AS is_valid;";
 
-        Integer count = jt.queryForObject(sql, Integer.class, phoneNo, otp);
-        return count != null && count > 0; // Returns true if OTP is valid
+        
+        try {
+            return jt.update(sql, phoneNo, otp) == 1;
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updatePassword(String password, String phoneNo) {
+        String sql = "UPDATE public.user pu "
+                        + " SET password = ? " 
+                        + " FROM otp " 
+                        + " WHERE pu.phone_no = otp.phone_no "
+                        + " AND otp.is_valid = true "
+                        + " AND otp.valid_till > CURRENT_TIMESTAMP"
+                        + " AND pu.phone_no = ?;";
+
+        try {
+            return jt.update(sql, phoneNo, password) == 1;
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }

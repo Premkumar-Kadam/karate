@@ -121,6 +121,7 @@ CREATE TABLE otp (
     otp VARCHAR(10) NOT NULL,
     otp_for VARCHAR(30) NOT NULL,
     valid_till TIMESTAMP DEFAULT (NOW() + INTERVAL '15 minutes'),
+    is_valid BOOLEAN NOT NULL DEFAULT FALSE,
     created_by VARCHAR(50),
     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     active BOOLEAN DEFAULT TRUE

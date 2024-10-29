@@ -16,4 +16,6 @@ public interface  AuthInterfaceService{
 
     ResponseDto forgotPasswordService(String phoneNo);
 
+    ResponseDto changePasswordService(AuthDto user);
+
 }

@@ -25,5 +25,12 @@ public class Password {
         return ResponseEntity.accepted().body(response.toString());
     }
 
+    @PostMapping("/change-password")
+    public  ResponseEntity<String> changePassword(@RequestBody AuthDto user, HttpSession session){
+
+        ResponseDto response = ais.changePasswordService(user);
+        return ResponseEntity.accepted().body(response.toString());
+    }
+
     
 }

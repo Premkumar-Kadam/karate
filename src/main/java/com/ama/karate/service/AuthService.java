@@ -81,4 +81,43 @@ public class AuthService implements AuthInterfaceService{
             return responseDto;
         }
     }
+
+    @Override
+    public ResponseDto changePasswordService(AuthDto user){
+
+        ResponseDto responseDto = new ResponseDto();
+        try {
+
+            if(!user.getPassword().equals(user.getConfirmPassword())){
+                responseDto.setStatusCode(409);
+                responseDto.setMessage("Passwords do not match");
+                return responseDto;
+            }
+
+            boolean otpVerified = login.isOtpValid(user.getPhoneNo(), user.getOtp());
+
+            if(!otpVerified){
+                responseDto.setStatusCode(409);
+                responseDto.setMessage("OTP Verification Failed");
+                return responseDto;
+            }
+
+            boolean passwordStatus = login.updatePassword(passwordService.createPassword(user.getPassword()), user.getPhoneNo());
+
+            if(passwordStatus){
+                responseDto.setStatusCode(200);
+                responseDto.setMessage("Password Updated Successfully!");
+                return responseDto;
+            }
+            
+            responseDto.setStatusCode(500);
+            responseDto.setMessage("Operation Error");
+            return responseDto;
+            
+        } catch (Exception e) {
+            responseDto.setStatusCode(500);
+            responseDto.setMessage("Internal Server Error");
+            return responseDto;
+        }
+    }
 }
