@@ -3,6 +3,7 @@ package com.ama.karate.interfaceService;
 import org.springframework.stereotype.Service;
 
 import com.ama.karate.dto.AuthDto;
+import com.ama.karate.dto.ResponseDto;
 
 @Service
 public interface  AuthInterfaceService{
@@ -12,5 +13,9 @@ public interface  AuthInterfaceService{
     boolean setSessionInRedis(String sessionKey, String phoneNo);
 
     String getSessionInRedis(String sessionKey);
+
+    ResponseDto forgotPasswordService(String phoneNo);
+
+    ResponseDto changePasswordService(AuthDto user);
 
 }

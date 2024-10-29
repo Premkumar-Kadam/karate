@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.ama.karate.dto.ClassesDto;
+import com.ama.karate.dto.ResponseDto;
 import com.ama.karate.dto.StudentDto;
 
 import jakarta.servlet.http.HttpSession;
@@ -18,6 +19,6 @@ public interface UserInterfaceService {
 
     List<StudentDto> bringStudentDetails(String phoneNo, int studentId);
 
-    public List<StudentDto> sendStudentAdmissions(String StudentObj, HttpSession session);
+    ResponseDto sendStudentAdmissions(String StudentObj, String phoneNo); 
     
 }
