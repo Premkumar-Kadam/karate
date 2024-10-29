@@ -22,14 +22,14 @@ public class Password {
     public  ResponseEntity<String> forgitPassword(@RequestBody AuthDto user, HttpSession session){
 
         ResponseDto response = ais.forgotPasswordService(user.getPhoneNo());
-        return ResponseEntity.accepted().body(response.toString());
+        return ResponseEntity.status(response.getStatusCode()).body(response.getMessage());
     }
 
     @PostMapping("/change-password")
     public  ResponseEntity<String> changePassword(@RequestBody AuthDto user, HttpSession session){
 
         ResponseDto response = ais.changePasswordService(user);
-        return ResponseEntity.accepted().body(response.toString());
+        return ResponseEntity.status(response.getStatusCode()).body(response.getMessage());
     }
 
     
