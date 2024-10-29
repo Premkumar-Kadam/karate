@@ -41,6 +41,26 @@ pipeline {
             }
         }
         
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh '''
+                    mvn sonar:sonar \
+                    -Dsonar.projectKey=ama:karate \
+                    -Dsonar.projectName=Karate Backend\
+                    -Dsonar.host.url=http://172.24.2.184:9001 \
+                    -Dsonar.login=${SONAR_TOKEN} 
+                    '''
+                }
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
+                waitForQualityGate abortPipeline: true
+            }
+        }
+        
         stage('Code-Build') {
             steps {
                sh "mvn clean package"
