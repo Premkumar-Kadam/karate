@@ -72,7 +72,7 @@ public class AuthService implements AuthInterfaceService{
             }
             
             responseDto.setStatusCode(400);
-            responseDto.setMessage("Insert Failed");
+            responseDto.setMessage("Operation Failed");
             return responseDto;
             
         } catch (Exception e) {

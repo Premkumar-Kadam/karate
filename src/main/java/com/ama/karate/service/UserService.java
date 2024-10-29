@@ -8,13 +8,14 @@ import org.springframework.stereotype.Service;
 import com.ama.karate.dao.userBasic.ClassesDao;
 import com.ama.karate.dao.userBasic.StudentsDao;
 import com.ama.karate.dto.ClassesDto;
+import com.ama.karate.dto.ResponseDto;
 import com.ama.karate.dto.StudentDto;
 import com.ama.karate.interfaceService.UserInterfaceService;
 
 import jakarta.servlet.http.HttpSession;
 
 @Service
-public class ClassesService implements UserInterfaceService{
+public class UserService implements UserInterfaceService{
 
     @Autowired ClassesDao icd;
     
@@ -36,8 +37,7 @@ public class ClassesService implements UserInterfaceService{
     }
 
     @Override
-    public List<StudentDto> sendStudentAdmissions(String StudentObj, HttpSession session) {
-        String phoneNo = (String) session.getAttribute("phoneNo");
+    public ResponseDto sendStudentAdmissions(String StudentObj, String phoneNo) {
         return isd.sendStudentAdmissions(StudentObj, phoneNo);
     }
 
