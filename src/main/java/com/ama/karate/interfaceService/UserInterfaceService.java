@@ -8,8 +8,6 @@ import com.ama.karate.dto.ClassesDto;
 import com.ama.karate.dto.ResponseDto;
 import com.ama.karate.dto.StudentDto;
 
-import jakarta.servlet.http.HttpSession;
-
 @Service
 public interface UserInterfaceService {
 

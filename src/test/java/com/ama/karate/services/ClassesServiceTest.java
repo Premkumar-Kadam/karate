@@ -11,7 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ama.karate.dto.ClassesDto;
-import com.ama.karate.service.ClassesService;
+import com.ama.karate.service.UserService;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -19,7 +19,7 @@ import com.ama.karate.service.ClassesService;
 public class ClassesServiceTest {
 
     @Autowired
-    private ClassesService service;
+    private UserService service;
 
     @Test
     void testBringUserClasses_ReturnsExpectedNumberOfClasses() {

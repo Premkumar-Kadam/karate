@@ -12,8 +12,6 @@ import com.ama.karate.dto.ResponseDto;
 import com.ama.karate.dto.StudentDto;
 import com.ama.karate.interfaceService.UserInterfaceService;
 
-import jakarta.servlet.http.HttpSession;
-
 @Service
 public class UserService implements UserInterfaceService{
 

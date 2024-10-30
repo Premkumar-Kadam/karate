@@ -14,7 +14,7 @@ public class loginDao {
 
     @Autowired JdbcTemplate jt;
 
-    //  To fetch the password by phone number
+    //   To fetch the password by phone number
     public AuthDto userPassword(String phoneNo) {
         System.out.println("user phone in dao : 0"+phoneNo);
         try {
@@ -106,29 +106,23 @@ public class loginDao {
     }
 
     public boolean isOtpValid(String phoneNo, String otp) {
-        String sql = "WITH updated AS (" + 
-                        "     UPDATE otp" + 
-                        "     SET is_valid = TRUE" + 
-                        "     WHERE id = (" + 
-                        "         SELECT id" + 
-                        "         FROM otp" + 
-                        "         WHERE phone_no = ?" + 
-                        "           AND otp = ?" + 
-                        "           AND valid_till > CURRENT_TIMESTAMP" + 
-                        "           AND is_valid = FALSE" + 
-                        "         ORDER BY id DESC" + 
-                        "         LIMIT 1" + 
-                        "     )" + 
-                        "     RETURNING 1" + 
+        String sql = "UPDATE otp" + 
+                        " SET is_valid = TRUE" + 
+                        " WHERE id = (" + 
+                        "     SELECT id" + 
+                        "     FROM otp" + 
+                        "     WHERE phone_no = ?" + 
+                        "       AND otp = ?" + 
+                        "       AND valid_till > CURRENT_TIMESTAMP" + 
+                        "       AND is_valid = FALSE" + 
+                        "     ORDER BY id DESC" + 
+                        "     LIMIT 1" + 
                         " )" + 
-                        " SELECT CASE " + 
-                        "            WHEN EXISTS (SELECT 1 FROM updated) THEN TRUE" + 
-                        "            ELSE FALSE" + 
-                        "        END AS is_valid;";
+                        " RETURNING is_valid;";
 
-        
         try {
-            return jt.update(sql, phoneNo, otp) == 1;
+            Boolean isValid = jt.queryForObject(sql, Boolean.class, phoneNo, otp);
+            return isValid != null && isValid;
         } catch (DataAccessException e) {
             e.printStackTrace();
             return false;
@@ -142,10 +136,11 @@ public class loginDao {
                         + " WHERE pu.phone_no = otp.phone_no "
                         + " AND otp.is_valid = true "
                         + " AND otp.valid_till > CURRENT_TIMESTAMP"
-                        + " AND pu.phone_no = ?;";
+                        + " AND pu.phone_no = ? RETURNING TRUE;";
 
         try {
-            return jt.update(sql, phoneNo, password) == 1;
+            Boolean isChanges = jt.queryForObject(sql, Boolean.class, password, phoneNo);
+            return isChanges != null && isChanges;
         } catch (DataAccessException e) {
             e.printStackTrace();
             return false;
